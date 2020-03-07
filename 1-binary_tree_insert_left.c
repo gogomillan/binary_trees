@@ -22,8 +22,11 @@ binary_tree_t *node;
 	node->left = NULL;
 	node->right = NULL;
 
-	if (parent->left)
+	if (parent->left != NULL)
+	{
 		node->left = parent->left;
+		parent->left->parent = node;
+	}
 	parent->left = node;
 
 	return (node);
