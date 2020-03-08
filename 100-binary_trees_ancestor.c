@@ -17,7 +17,7 @@ const binary_tree_t *node;
 
 	/* compare both depths */
 	diff = _depth(first) - _depth(second);
-	/* swap the deeper node with least deep node*/
+	/* make the first node the deeper */
 	if (diff < 0)
 	{
 		node = second;
@@ -25,7 +25,7 @@ const binary_tree_t *node;
 		first = node;
 		diff *= -1;
 	}
-	/* bring it at same level as the other node */
+	/* make nodes at same level */
 	while (diff--)
 		first = first->parent;
 	/* check for the same parent */
