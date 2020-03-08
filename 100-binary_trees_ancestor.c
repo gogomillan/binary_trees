@@ -29,7 +29,7 @@ const binary_tree_t *node;
 	while (diff--)
 		first = first->parent;
 	/* check for the same parent */
-	while (first && second)
+	while (first != NULL && second != NULL)
 	{
 		if (first->n == second->n)
 			return ((binary_tree_t *)first);
@@ -49,7 +49,7 @@ int _depth(const binary_tree_t *node)
 const binary_tree_t *tmp = node;
 int depth = -1;
 
-	while (tmp)
+	while (tmp != NULL)
 	{
 		++depth;
 		tmp = tmp->parent;
