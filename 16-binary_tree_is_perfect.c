@@ -73,7 +73,7 @@ size_t count_nodes(const binary_tree_t *tree)
 }
 
 /**
-* max - compares two ints to return the maximum of two
+* greater - compares two ints to return the maximum of two
 * @left: first number
 * @right: second number
 * Return: max of two
