@@ -1,9 +1,9 @@
 #include "binary_trees.h"
 
-size_t max(size_t left, size_t right);
+size_t greater(size_t left, size_t right);
 size_t count_nodes(const binary_tree_t *tree);
-size_t count_height(const binary_tree_t *tree);
-size_t cal_power(size_t exponent);
+size_t _height(const binary_tree_t *tree);
+size_t _exp(size_t x);
 
 /**
 * binary_tree_is_perfect - checks if a binary tree is perfect
@@ -17,46 +17,46 @@ size_t total_nodes, height;
 	if (tree == NULL)
 		return (0);
 
-	height = count_height(tree);
+	height = _height(tree);
 	total_nodes = count_nodes(tree);
 
 	/* formula : 2 ^ level + 1 - 1 nodes*/
-	if (total_nodes == cal_power(height) - 1)
+	if (total_nodes == _exp(height) - 1)
 		return (1);
 	return (0);
 }
 
 /**
-* cal_power - calculates the power of 2
-* @exponent: power of 2
+* _exp - calculates the power of 2
+* @x: exponent power of 2
 * Return: 2^n
 **/
-size_t cal_power(size_t exponent)
+size_t _exp(size_t x)
 {
 size_t result = 1;
 
-	if (exponent == 0)
+	if (x == 0)
 		return (result);
-	while (exponent > 0)
+	while (x > 0)
 	{
 		result *= 2;
-		exponent -= 1;
+		x -= 1;
 	}
 	return (result);
 }
 
 /**
-* count_height - calculates height of a given binary tree, considering root
+* _height - calculates height of a given binary tree, considering root
 * at height 1.
 * @tree: pointer to the root node of the tree to check
 * Return: height of tree or 0
 **/
-size_t count_height(const binary_tree_t *tree)
+size_t _height(const binary_tree_t *tree)
 {
 	if (tree == NULL)
 		return (0);
 
-	return (1 + max(count_height(tree->left), count_height(tree->right)));
+	return (1 + greater(_height(tree->left), _height(tree->right)));
 }
 
 /**
@@ -78,7 +78,7 @@ size_t count_nodes(const binary_tree_t *tree)
 * @right: second number
 * Return: max of two
 **/
-size_t max(size_t left, size_t right)
+size_t greater(size_t left, size_t right)
 {
 	if (left >= right)
 		return (left);
