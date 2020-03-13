@@ -1,44 +1,6 @@
 #include "binary_trees.h"
 
 /**
-* avl_insert_bal - balance the tree
-* @parent: the parent node
-* @value: value to store in the node to be inserted
-* Return: Nothing
-**/
-void avl_insert_bal(avl_t *parent, int value)
-{
-int bal_factor;
-
-	while (parent)
-	{
-		bal_factor = binary_tree_balance(parent);
-		/* if greater than 1, tree is left skewed */
-		if (bal_factor > 1)
-		{
-			if (value < parent->left->n)/* left-left case */
-				parent = binary_tree_rotate_right(parent);
-			else if (value > parent->left->n)/* left-right case */
-			{
-				parent->left = binary_tree_rotate_left(parent->left);
-				parent = binary_tree_rotate_right(parent);
-			}
-		}
-		if (bal_factor < -1)
-		{
-			if (value > parent->right->n)/* right-right case */
-				parent = binary_tree_rotate_left(parent);
-			else if (value < parent->right->n)/* right-left case */
-			{
-				parent->right = binary_tree_rotate_right(parent->right);
-				parent = binary_tree_rotate_left(parent);
-			}
-		}
-		parent = parent->parent;
-	}
-}
-
-/**
 * avl_insert - inserts a value in an AVL Tree
 * @tree: double pointer to the root node of the AVL tree to insert the value in
 * @value: value to store in the node to be inserted
@@ -46,7 +8,8 @@ int bal_factor;
 **/
 avl_t *avl_insert(avl_t **tree, int value)
 {
-avl_t *new_node, *parent;
+	int bal_factor;
+	avl_t *new_node, *parent;
 
 	if (!tree)
 		return (NULL);
@@ -78,7 +41,31 @@ avl_t *new_node, *parent;
 	if (!new_node)
 		return (NULL);
 	parent = new_node->parent;/* already in tree */
-	avl_insert_bal(parent, value);
-
+	while (parent)
+	{
+		bal_factor = binary_tree_balance(parent);
+		/* if greater than 1, tree is left skewed */
+		if (bal_factor > 1)
+		{
+			if (value < parent->left->n)/* left-left case */
+				parent = binary_tree_rotate_right(parent);
+			else if (value > parent->left->n)/* left-right case */
+			{
+				parent->left = binary_tree_rotate_left(parent->left);
+				parent = binary_tree_rotate_right(parent);
+			}
+		}
+		if (bal_factor < -1)
+		{
+			if (value > parent->right->n)/* right-right case */
+				parent = binary_tree_rotate_left(parent);
+			else if (value < parent->right->n)/* right-left case */
+			{
+				parent->right = binary_tree_rotate_right(parent->right);
+				parent = binary_tree_rotate_left(parent);
+			}
+		}
+		parent = parent->parent;
+	}
 	return (new_node);
 }
