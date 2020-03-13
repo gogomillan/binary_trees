@@ -8,21 +8,23 @@
 **/
 node_l *add_end(node_l **head, int n)
 {
-	node_l *tmp, *cur;
+node_l *tmp, *cur;
 
 	tmp = malloc(sizeof(node_l));
-	if (!tmp)
+	if (tmp == NULL)
 		return (NULL);
+
 	tmp->n = n;
 	tmp->next = NULL;
 
-	if (!*head)
+	if (*head == NULL)
 	{
 		*head = tmp;
 		return (tmp);
 	}
+
 	cur = *head;
-	while (cur->next)
+	while (cur->next != NULL)
 		cur = cur->next;
 	cur->next = tmp;
 	return (tmp);
@@ -36,41 +38,26 @@ node_l *add_end(node_l **head, int n)
 **/
 list_l *add_tolist(list_l **head, node_l *node)
 {
-	list_l *tmp, *cur;
+list_l *tmp, *cur;
 
 	tmp = malloc(sizeof(list_l));
-	if (!tmp)
+	if (tmp == NULL)
 		return (NULL);
+
 	tmp->node = node;
 	tmp->next = NULL;
-	if (!*head)
+
+	if (*head == NULL)
 	{
 		*head = tmp;
 		return (tmp);
 	}
+
 	cur = *head;
-	while (cur->next)
+	while (cur->next != NULL)
 		cur = cur->next;
 	cur->next = tmp;
 	return (tmp);
-}
-
-/**
-* list_size - counts number of nodes in a list
-* @head_l: pointer to pointer to head of the list
-* Return: size of list
-**/
-int list_size(list_l **head_l)
-{
-	int count = 0;
-	list_l *tmp = *head_l;
-
-	while (tmp)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
 }
 
 /**
@@ -81,10 +68,10 @@ int list_size(list_l **head_l)
 **/
 node_l *get_node(list_l **head_l, int level)
 {
-	int i;
-	list_l *tmp = *head_l;
+int i;
+list_l *tmp = *head_l;
 
-	for (i = 0; i < level && tmp; i++)
+	for (i = 0; i < level && tmp != NULL; i++)
 	{
 		if (i == level - 1)
 			return (tmp->node);
@@ -102,14 +89,24 @@ node_l *get_node(list_l **head_l, int level)
 * Return: nothing
 **/
 void level_order_traversal(const binary_tree_t *tree, list_l **head_l,
-			   int level)
+							int level)
 {
-	node_l *head_n = NULL;
+int count = 0;
+list_l *tmp = *head_l;
+node_l *head_n = NULL;
 
-	if (!tree)
+	if (tree == NULL)
 		return;
+
+	/* Get the list size */
+	while (tmp != NULL)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+
 	/* level is not added in list of list, add it */
-	if (level > list_size(head_l))
+	if (level > count)
 	{
 		head_n = add_end(&head_n, tree->n);
 		add_tolist(head_l, head_n);
@@ -120,6 +117,7 @@ void level_order_traversal(const binary_tree_t *tree, list_l **head_l,
 		head_n = get_node(head_l, level);
 		add_end(&head_n, tree->n);
 	}
+
 	level_order_traversal(tree->left, head_l, level + 1);
 	level_order_traversal(tree->right, head_l, level + 1);
 }
@@ -132,17 +130,19 @@ void level_order_traversal(const binary_tree_t *tree, list_l **head_l,
 **/
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-	list_l *head_l = NULL;
-	list_l *walker;
-	node_l *cur, *tmp;
+list_l *head_l = NULL;
+list_l *walker;
+node_l *cur, *tmp;
 
-	if (!tree || !func)
+	if (tree == NULL || func == NULL)
 		return;
+
 	level_order_traversal(tree, &head_l, 1);
-	while (head_l)
+
+	while (head_l != NULL)
 	{
 		cur = head_l->node;
-		while (cur)
+		while (cur != NULL)
 		{
 			func(cur->n);
 			tmp = cur;
